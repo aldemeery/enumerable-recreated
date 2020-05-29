@@ -9,3 +9,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Re-implementation for:
     - `#each` method
+    - `#each_with_index` method
