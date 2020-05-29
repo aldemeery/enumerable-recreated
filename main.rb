@@ -1,3 +1,5 @@
+# rubocop:disable Style/CaseEquality
+
 module Enumerable
   def my_each
     size.times { |counter| yield(to_a[counter]) } if block_given?
@@ -16,4 +18,26 @@ module Enumerable
     my_each { |item| selected.push(item) if yield(item) }
     selected
   end
+
+  def my_all?(*args, &block)
+    all_true = true
+
+    if (arg = args[0])
+      puts 'Warning, the block is being ignored.' if block
+      my_each do |item|
+        all_true &= if arg.is_a? Regexp
+                      (arg === item.to_s)
+                    else
+                      item.is_a? arg
+                    end
+      end
+    elsif block_given?
+      my_each { |item| all_true &= yield(item) }
+    else
+      all_true = my_all? { |item| item }
+    end
+
+    all_true
+  end
 end
+# rubocop:enable Style/CaseEquality

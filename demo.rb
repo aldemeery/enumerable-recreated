@@ -13,3 +13,7 @@ puts '============'
 puts '[1, 2, 3, 4, 5].my_select'
 p(a.my_select { |i| i > 2 })
 puts '============'
+
+puts '[1, 2, 3, 4, 5].all?'
+p(a.my_all?)
+puts '============'
