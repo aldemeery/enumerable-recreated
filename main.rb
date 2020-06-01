@@ -62,6 +62,28 @@ module Enumerable
     return false
   end
 
+  def my_none? (*args, &block)
+    if (arg = args[0])
+      puts 'Warning, the block is being ignored. ' if block
+      my_each do |item|
+       if arg.is_a? Regexp 
+         if arg === item.to_s
+            return false
+         end
+       else
+         if item.is_a?(arg)
+           return false
+         end
+       end
+      end
+     elsif block_given?
+       my_each {|item| return false if yield(item)}
+     else
+       return my_none?{ |item| item }
+     end
+     return true
+   end
+ 
 
 end
 
