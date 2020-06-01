@@ -89,11 +89,11 @@ module Enumerable
     counter
   end
 
-  def my_map
-    return enum_for(__method__) unless block_given?
+  def my_map(*args)
+    return enum_for(__method__) unless block_given? || args[0].nil?
 
     new_array = []
-    my_each { |item| new_array.push(yield(item)) }
+    my_each { |item| new_array << args[0].nil? yield(item) : args[0].call(item) }
     new_array
   end
 
@@ -103,6 +103,29 @@ module Enumerable
     my_each_with_index { |item, index| self[index] = yield(item) }
     self
   end
+
+  def my_inject(*args, &block)
+    if args.size == 2
+      raise ArgumentError "Error, argument has to be of type Symbol, type #{args[1].class} given instead." unless args[1].is_a? Symbol
+      memo = arg[0]
+      my_each {|item|  memo = memo.send(args[1], item)}
+      return memo
+    elsif args.size == 1 && !block_given?
+      raise ArgumentError "Error, argument has to be of type Symbol, type #{args[0].class} given instead." unless args[0].is_a? Symbol
+      memo = self.first
+      my_each {|item|  memo = memo.send(args[0], item)}
+      return memo
+    else
+      [1].inject {|memo, item| memo *= item}
+      memo = args[0] || self.first
+      my_each {|item| memo = yield(memo, item) if block_given?}
+      return memo
+    end
+  end
+end
+
+def multiply_els(array)
+  array.inject(:*)
 end
 
 # rubocop:enable Style/CaseEquality

@@ -36,4 +36,13 @@ puts '============'
 
 puts '[1, 2, 3, 4, 5].my_map! { |item| item + 10 }'
 p(a.my_map! { |item| item + 10 })
+a.my_map! {|item| item - 10}
+puts '============'
+
+puts '[1, 2, 3, 4, 5].inject'
+p(a.inject(:+))
+puts '============'
+
+puts 'multiply_els([2, 4, 5])'
+p(multiply_els([2, 4, 5]))
 puts '============'
