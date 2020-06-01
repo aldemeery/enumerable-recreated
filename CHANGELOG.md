@@ -12,3 +12,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `#each_with_index` method.
     - `#select` method.
     - `#all?` method.
+    - `#any?` method.

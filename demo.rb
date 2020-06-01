@@ -14,6 +14,10 @@ puts '[1, 2, 3, 4, 5].my_select'
 p(a.my_select { |i| i > 2 })
 puts '============'
 
-puts '[1, 2, 3, 4, 5].all?'
+puts '[1, 2, 3, 4, 5].my_all?'
 p(a.my_all?)
+puts '============'
+
+puts '[1, 2, 3, 4, 5].my_any? {|i| i%2 == 0}'
+p(a.my_any?{|i| i%2 == 0})
 puts '============'
