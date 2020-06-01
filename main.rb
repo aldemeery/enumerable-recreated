@@ -40,65 +40,69 @@ module Enumerable
     all_true
   end
 
-  def my_any? (*args, &block)
-   if (arg = args[0])
-     puts 'Warning, the block is being ignored. ' if block
-     my_each do |item|
-      if arg.is_a? Regexp 
-        if arg === item.to_s
-           return true
-        end
-      else
-        if item.is_a?(arg)
-          return true
-        end
-      end
-     end
-    elsif block_given?
-      my_each {|item| return true if yield(item)}
-    else
-      return my_any?{ |item| item }
-    end
-    return false
-  end
-
-  def my_none? (*args, &block)
+  def my_any?(*args, &block)
     if (arg = args[0])
       puts 'Warning, the block is being ignored. ' if block
       my_each do |item|
-       if arg.is_a? Regexp 
-         if arg === item.to_s
-            return false
-         end
-       else
-         if item.is_a?(arg)
-           return false
-         end
-       end
+        if arg.is_a? Regexp
+          return true if arg === item.to_s
+        else
+          return true if item.is_a?(arg)
+        end
       end
-     elsif block_given?
-       my_each {|item| return false if yield(item)}
-     else
-       return my_none?{ |item| item }
+    elsif block_given?
+      my_each { |item| return true if yield(item) }
+    else
+      return my_any? { |item| item }
      end
-     return true
+    false
+  end
+
+  def my_none?(*args, &block)
+    if (arg = args[0])
+      puts 'Warning, the block is being ignored. ' if block
+      my_each do |item|
+        if arg.is_a? Regexp
+          return false if arg === item.to_s
+        else
+          return false if item.is_a?(arg)
+        end
+      end
+    elsif block_given?
+      my_each { |item| return false if yield(item) }
+    else
+      return my_none? { |item| item }
+     end
+    true
    end
 
-   def my_count? (*args, &block)
+  def my_count?(*args, &block)
     counter = 0
     if (arg = args[0])
-      puts "Warning, the block is being ignored. " if block
-      my_each{|item| counter += 1 if item == arg}
+      puts 'Warning, the block is being ignored. ' if block
+      my_each { |item| counter += 1 if item == arg }
     elsif block_given?
-      my_each {|item| counter += 1 if yield(item)}
+      my_each { |item| counter += 1 if yield(item) }
     else
-      my_each {|item| counter+=1}
+      my_each { |_item| counter += 1 }
     end
-    return counter  
-   end
- 
+    counter
+  end
 
+  def my_map
+    return enum_for(__method__) unless block_given?
+
+    new_array = []
+    my_each { |item| new_array.push(yield(item)) }
+    new_array
+  end
+
+  def my_map!
+    return enum_for(__method__) unless block_given?
+
+    my_each_with_index { |item, index| self[index] = yield(item) }
+    self
+  end
 end
-
 
 # rubocop:enable Style/CaseEquality
