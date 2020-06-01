@@ -83,6 +83,19 @@ module Enumerable
      end
      return true
    end
+
+   def my_count? (*args, &block)
+    counter = 0
+    if (arg = args[0])
+      puts "Warning, the block is being ignored. " if block
+      my_each{|item| counter += 1 if item == arg}
+    elsif block_given?
+      my_each {|item| counter += 1 if yield(item)}
+    else
+      my_each {|item| counter+=1}
+    end
+    return counter  
+   end
  
 
 end
