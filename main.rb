@@ -24,6 +24,7 @@ module Enumerable
 
     if (arg = args[0])
       puts 'Warning, the block is being ignored.' if block
+
       my_each do |item|
         all_true &= if arg.is_a? Regexp
                       (arg === item.to_s)
@@ -41,45 +42,28 @@ module Enumerable
   end
 
   def my_any?(*args, &block)
+    result = false
     if (arg = args[0])
       puts 'Warning, the block is being ignored. ' if block
-      my_each do |item|
-        if arg.is_a? Regexp
-          return true if arg === item.to_s
-        else
-          return true if item.is_a?(arg)
-        end
-      end
+
+      my_each { |item| result |= (arg.is_a?(Regexp) ? arg === item.to_s : item.is_a?(arg)); }
     elsif block_given?
-      my_each { |item| return true if yield(item) }
+      my_each { |item| result |= yield(item) }
     else
       return my_any? { |item| item }
-     end
-    false
+    end
+    result
   end
 
   def my_none?(*args, &block)
-    if (arg = args[0])
-      puts 'Warning, the block is being ignored. ' if block
-      my_each do |item|
-        if arg.is_a? Regexp
-          return false if arg === item.to_s
-        else
-          return false if item.is_a?(arg)
-        end
-      end
-    elsif block_given?
-      my_each { |item| return false if yield(item) }
-    else
-      return my_none? { |item| item }
-     end
-    true
-   end
+    !my_any?(*args, &block)
+  end
 
   def my_count?(*args, &block)
     counter = 0
     if (arg = args[0])
       puts 'Warning, the block is being ignored. ' if block
+
       my_each { |item| counter += 1 if item == arg }
     elsif block_given?
       my_each { |item| counter += 1 if yield(item) }
@@ -93,7 +77,7 @@ module Enumerable
     return enum_for(__method__) unless block_given? || args[0].nil?
 
     new_array = []
-    my_each { |item| new_array << args[0].nil? yield(item) : args[0].call(item) }
+    my_each { |item| new_array << args[0].nil? ? yield(item) : args[0].call(item) }
     new_array
   end
 
@@ -104,23 +88,18 @@ module Enumerable
     self
   end
 
-  def my_inject(*args, &block)
+  def my_inject(*args)
     if args.size == 2
-      raise ArgumentError "Error, argument has to be of type Symbol, type #{args[1].class} given instead." unless args[1].is_a? Symbol
       memo = arg[0]
-      my_each {|item|  memo = memo.send(args[1], item)}
-      return memo
+      my_each { |item| memo = memo.send(args[1], item) }
     elsif args.size == 1 && !block_given?
-      raise ArgumentError "Error, argument has to be of type Symbol, type #{args[0].class} given instead." unless args[0].is_a? Symbol
-      memo = self.first
-      my_each {|item|  memo = memo.send(args[0], item)}
-      return memo
+      memo = first
+      my_each { |item| memo = memo.send(args[0], item) }
     else
-      [1].inject {|memo, item| memo *= item}
-      memo = args[0] || self.first
-      my_each {|item| memo = yield(memo, item) if block_given?}
-      return memo
+      memo = args[0] || first
+      my_each { |item| memo = yield(memo, item) if block_given? }
     end
+    memo
   end
 end
 
