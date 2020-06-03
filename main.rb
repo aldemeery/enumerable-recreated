@@ -59,7 +59,7 @@ module Enumerable
     !my_any?(*args, &block)
   end
 
-  def my_count?(*args, &block)
+  def my_count(*args, &block)
     counter = 0
     if (arg = args[0])
       puts 'Warning, the block is being ignored. ' if block
