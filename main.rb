@@ -90,13 +90,13 @@ module Enumerable
 
   def my_inject(*args)
     if args.size == 2
-      memo = arg[0]
+      memo = args[0]
       my_each { |item| memo = memo.send(args[1], item) }
     elsif args.size == 1 && !block_given?
-      memo = first
+      memo = shift
       my_each { |item| memo = memo.send(args[0], item) }
     else
-      memo = args[0] || first
+      memo = args[0] || shift
       my_each { |item| memo = yield(memo, item) if block_given? }
     end
     memo
