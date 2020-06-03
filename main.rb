@@ -46,7 +46,7 @@ module Enumerable
     if (arg = args[0])
       puts 'Warning, the block is being ignored. ' if block
 
-      my_each { |item| result |= (arg.is_a?(Regexp) ? arg === item.to_s : item.is_a?(arg)); }
+      my_each { |item| result |= (arg.is_a?(Regexp) ? arg === item.to_s : arg === item; )}
     elsif block_given?
       my_each { |item| result |= yield(item) }
     else
