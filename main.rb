@@ -29,7 +29,7 @@ module Enumerable
         all_true &= if arg.is_a? Regexp
                       (arg === item.to_s)
                     else
-                      item.is_a? arg
+                      arg === item
                     end
       end
     elsif block_given?

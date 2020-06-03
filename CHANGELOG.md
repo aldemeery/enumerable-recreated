@@ -21,3 +21,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Rubocop errors.
+- `#my_all?` error when passing a fixed single value.
