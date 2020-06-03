@@ -2,10 +2,43 @@
 
 The Ruby Enumerable module re-implemented
 
+A re-implementation for:
+- `#each`
+- `#each_with_index`
+- `#select`
+- `#all`
+- `#any`
+- `#none`
+- `#count`
+- `#my_map`
+- `#my_map!`
+- `#my_inject`
+
+## Built With
+
+- Ruby
+
+## Getting Started
+
+To get a local copy up and running follow these simple example steps:
 
 ## Live version
 [![Run on Repl.it](https://repl.it/badge/github/aldemeery/enumerable-recreated)](https://repl.it/@aldemeery/enumerable-recreated)
 
+### Prerequisites
+
+- Text Editor (VSCode is suggested.)
+- [Ruby](https://ruby-doc.org/downloads/)
+
+### Setup
+
+- Install [git](https://git-scm.com/downloads)
+- Open Terminal
+- Change directory to folder to download repository
+- Use `cd <file-path>`
+- Run `git clone https://github.com/aldemeery/enumerable-recreated.git`
+- Install [Ruby](https://ruby-doc.org/downloads/)
+- Run `ruby main.rb`
 
 ## Authors
 
