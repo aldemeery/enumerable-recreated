@@ -46,7 +46,7 @@ module Enumerable
     if (arg = args[0])
       puts 'Warning, the block is being ignored. ' if block
 
-      my_each { |item| result |= (arg.is_a?(Regexp) ? arg === item.to_s : arg === item; )}
+      my_each { |item| result |= (arg.is_a?(Regexp) ? (arg === item.to_s) : (arg === item)) }
     elsif block_given?
       my_each { |item| result |= yield(item) }
     else
@@ -74,17 +74,17 @@ module Enumerable
   end
 
   def my_map(*args)
-    return enum_for(__method__) unless block_given? || args[0].nil?
+    return enum_for(__method__) if !block_given? && args[0].nil?
 
     new_array = []
-    my_each { |item| new_array << args[0].nil? ? yield(item) : args[0].call(item) }
+    my_each { |item| new_array << (args[0].nil? ? yield(item) : args[0].call(item)) }
     new_array
   end
 
-  def my_map!
-    return enum_for(__method__) unless block_given?
+  def my_map!(*args)
+    return enum_for(__method__) if !block_given? && args[0].nil?
 
-    my_each_with_index { |item, index| self[index] = yield(item) }
+    my_each_with_index { |item, index| self[index] = (args[0].nil? ? yield(item) : args[0].call(item)) }
     self
   end
 
