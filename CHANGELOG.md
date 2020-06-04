@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `#my_any?` error when passing a fixed single value.
 - `#my_inject` returning incorrect values.
 - `#my_map` not returning enum if no block given.
+- `#my_inject` mutating the original array.
 
 ### Removed
 - The question mark from `#my_count?` to be `#my_count` instead."

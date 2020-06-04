@@ -93,11 +93,19 @@ module Enumerable
       memo = args[0]
       my_each { |item| memo = memo.send(args[1], item) }
     elsif args.size == 1 && !block_given?
-      memo = shift
+      first_el = shift
+      memo = first_el
       my_each { |item| memo = memo.send(args[0], item) }
+      unshift(first_el)
+
+      return memo
     else
-      memo = args[0] || shift
+      first_el = shift
+      memo = args[0] || first_el
       my_each { |item| memo = yield(memo, item) if block_given? }
+      unshift(first_el)
+
+      return memo
     end
     memo
   end
