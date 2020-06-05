@@ -1,4 +1,5 @@
 # rubocop:disable Style/CaseEquality
+require 'pry'
 
 module Enumerable
   def my_each
@@ -89,23 +90,16 @@ module Enumerable
   end
 
   def my_inject(*args)
-    if args.size == 2
-      memo = args[0]
-      my_each { |item| memo = memo.send(args[1], item) }
-    elsif args.size == 1 && !block_given?
-      first_el = shift
-      memo = first_el
-      my_each { |item| memo = memo.send(args[0], item) }
-      unshift(first_el)
+    raise(LocalJumpError.new, 'no block given') if !block_given? && args.empty?
 
-      return memo
+    symbol = args.pop unless block_given?
+
+    copy = [args, to_a].flatten
+    memo = copy.shift
+    if block_given?
+      copy.my_each { |item| memo = yield(memo, item) }
     else
-      first_el = shift
-      memo = args[0] || first_el
-      my_each { |item| memo = yield(memo, item) if block_given? }
-      unshift(first_el)
-
-      return memo
+      copy.my_each { |item| memo = memo.send(symbol, item) }
     end
     memo
   end

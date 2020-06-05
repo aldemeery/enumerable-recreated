@@ -27,6 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `#my_inject` returning incorrect values.
 - `#my_map` not returning enum if no block given.
 - `#my_inject` mutating the original array.
-
+- `#my_inject` not returning the same results as `#inject` in some cases.
 ### Removed
 - The question mark from `#my_count?` to be `#my_count` instead."
